@@ -3,7 +3,7 @@
 Add this store in umbrelOS: **App Store → ⋯ (top right) → Community App Stores → paste**
 
 ```
-https://github.com/christhealien/blake2b
+https://github.com/christhealien/bitcoin
 ```
 
 | App | What |
