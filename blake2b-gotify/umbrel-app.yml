@@ -27,7 +27,7 @@ repo: https://github.com/gotify/server
 support: https://github.com/christhealien/blake2b/issues
 submitter: christhealien
 submission: https://github.com/christhealien/blake2b
-icon: https://raw.githubusercontent.com/gotify/logo/master/gotify-logo-monochrome.svg
+icon: https://raw.githubusercontent.com/gotify/logo/master/gotify-logo-notification.svg
 releaseNotes: |-
   **3.1.1**
 
