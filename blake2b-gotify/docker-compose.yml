@@ -8,15 +8,50 @@ services:
       # Gotify has its own sign-in and app/client tokens; Umbrel's login would block the phone app and scripts
       PROXY_AUTH_ADD: "false"
 
+  # One-shot: makes a self-signed certificate the first time (kept in the app data, valid 10 years)
+  certs:
+    image: alpine:3.20
+    restart: "no"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        set -e
+        d=/app/data/certs
+        mkdir -p "$$d"
+        if [ ! -s "$$d/cert.pem" ] || [ ! -s "$$d/key.pem" ]; then
+          apk add --no-cache openssl >/dev/null
+          openssl req -x509 -newkey rsa:2048 -nodes -days 3650 \
+            -keyout "$$d/key.pem" -out "$$d/cert.pem" \
+            -subj "/CN=umbrel.local" \
+            -addext "subjectAltName=DNS:umbrel.local,DNS:localhost,DNS:umbrel,IP:127.0.0.1$${EXTRA_SAN:+,$$EXTRA_SAN}"
+          echo "created self-signed certificate"
+        fi
+        chmod 644 "$$d/cert.pem" "$$d/key.pem"
+    environment:
+      # optional: add your server's LAN IP, e.g. EXTRA_SAN=IP:192.168.1.50
+      EXTRA_SAN: ""
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+
   server:
     # Upstream image, unmodified. Check the tag against https://github.com/gotify/server/releases when updating.
     image: gotify/server:3.1.1
     restart: on-failure
     stop_grace_period: 15s
+    depends_on:
+      certs:
+        condition: service_completed_successfully
+    ports:
+      - 8443:443           # HTTPS (self-signed): https://umbrel.local:8443
     volumes:
       - ${APP_DATA_DIR}/data:/app/data
     environment:
       GOTIFY_DEFAULTUSER_NAME: admin
       GOTIFY_DEFAULTUSER_PASS: $APP_PASSWORD
       GOTIFY_REGISTRATION: "false"
+      GOTIFY_SERVER_SSL_ENABLED: "true"
+      GOTIFY_SERVER_SSL_PORT: "443"
+      GOTIFY_SERVER_SSL_REDIRECTTOHTTPS: "false"   # keep plain http working for Umbrel's app_proxy
+      GOTIFY_SERVER_SSL_CERTFILE: /app/data/certs/cert.pem
+      GOTIFY_SERVER_SSL_CERTKEY: /app/data/certs/key.pem
       TZ: UTC

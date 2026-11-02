@@ -16,15 +16,18 @@ description: >-
   password shown here (change it under Users), then add an application under Apps and send a test:
 
 
+  HTTPS is on too, with a self-signed certificate: https://umbrel.local:8443 (your browser will warn once; accept it, or trust the certificate in data/certs/cert.pem).
+
+
   curl "http://umbrel.local:8793/message?token=YOUR_APP_TOKEN" -F "title=Hello" -F "message=It works" -F "priority=5"
 developer: Gotify (upstream); packaging by christhealien
 website: https://gotify.net
 dependencies: []
 repo: https://github.com/gotify/server
-support: https://github.com/christhealien/Bitcoin-Umbrel-APPS/issues
+support: https://github.com/christhealien/blake2b/issues
 submitter: christhealien
-submission: https://github.com/christhealien/Bitcoin-Umbrel-APPS
-icon: https://raw.githubusercontent.com/christhealien/Bitcoin-Umbrel-APPS/master/blake2b-gotify/icon.svg
+submission: https://github.com/christhealien/blake2b
+icon: https://raw.githubusercontent.com/christhealien/blake2b/master/blake2b-gotify/icon.svg
 releaseNotes: |-
   **3.1.1**
 
