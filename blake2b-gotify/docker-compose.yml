@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: blake2b-gotify_server_1
+      APP_PORT: 80
+      # Gotify has its own sign-in and app/client tokens; Umbrel's login would block the phone app and scripts
+      PROXY_AUTH_ADD: "false"
+
+  server:
+    # Upstream image, unmodified. Check the tag against https://github.com/gotify/server/releases when updating.
+    image: gotify/server:3.1.1
+    restart: on-failure
+    stop_grace_period: 15s
+    volumes:
+      - ${APP_DATA_DIR}/data:/app/data
+    environment:
+      GOTIFY_DEFAULTUSER_NAME: admin
+      GOTIFY_DEFAULTUSER_PASS: $APP_PASSWORD
+      GOTIFY_REGISTRATION: "false"
+      TZ: UTC

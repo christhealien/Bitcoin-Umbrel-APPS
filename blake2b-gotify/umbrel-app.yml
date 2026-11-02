@@ -1,0 +1,34 @@
+manifestVersion: 1
+id: blake2b-gotify
+name: Gotify (blake2b)
+tagline: Your own push-notification server, on the newest Gotify release
+category: networking
+version: "3.1.1"
+port: 8793
+description: >-
+  Gotify is a simple, self-hosted server for sending and receiving push messages. Create an
+  application to get a token, then send a message from anything that can make an HTTP request
+  (a script, your miners' tooling, Blake2b ASIC Control, a cron job) and read it in the web UI,
+  the Android app or any client that speaks the Gotify API.
+
+
+  This is the upstream Gotify server, unmodified, on release 3.1.1. Sign in with the username and
+  password shown here (change it under Users), then add an application under Apps and send a test:
+
+
+  curl "http://umbrel.local:8793/message?token=YOUR_APP_TOKEN" -F "title=Hello" -F "message=It works" -F "priority=5"
+developer: Gotify (upstream); packaging by christhealien
+website: https://gotify.net
+dependencies: []
+repo: https://github.com/gotify/server
+support: https://github.com/christhealien/blake2b/issues
+submitter: christhealien
+submission: https://github.com/christhealien/blake2b
+icon: https://raw.githubusercontent.com/christhealien/blake2b/master/blake2b-gotify/icon.svg
+releaseNotes: |-
+  **3.1.1**
+
+  - First release in this store: the upstream Gotify server 3.1.1.
+path: ""
+deterministicPassword: true
+defaultUsername: admin
